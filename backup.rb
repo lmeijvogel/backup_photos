@@ -118,10 +118,8 @@ end
 
 def wait_and_unmount(dir, unmount_command, attempts: 20)
   attempts.times do |i|
-    any_locked_files = `lsof +d #{dir}`.lines.any?
-
-    if any_locked_files
-      puts "Files locked (#{i}/#{attempts})"
+    if fs_in_use?(dir)
+      puts "Files locked (#{i+1}/#{attempts})"
       sleep 2
       next
     end
@@ -131,6 +129,13 @@ def wait_and_unmount(dir, unmount_command, attempts: 20)
 
     return
   end
+end
+
+def fs_in_use?(mount_point)
+  # if `fuser` finds the file system in use, it returns
+  # status 0 (which Kernel#system will evaluate to true).
+  # Otherwise, it returns a status >0, which will evaluate to false.
+  system('fuser', '-m', mount_point, [:out, :err] => '/dev/null')
 end
 
 main
