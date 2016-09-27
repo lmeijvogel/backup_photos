@@ -29,7 +29,7 @@ VERACRYPT_UMOUNT_CMD="sudo /usr/bin/veracrypt --text --non-interactive -d  #{USB
 def main
   if File.exist?(SOURCE_LOCATION)
     perform_backup(
-      (SOURCE_GLOB % ['NEF']) => NEF_OUTPUT_DIR,
+      (SOURCE_GLOB % ['{NEF,MOV}']) => NEF_OUTPUT_DIR,
       (SOURCE_GLOB % ['JPG']) => JPG_OUTPUT_DIR
     )
 
