@@ -87,7 +87,7 @@ def with_usb_output_dir
 end
 
 def usb_container_mounted?
-  `mount | grep #{USB_OUTPUT_MOUNT}`.lines.map(&:strip).reject(&:empty?).any?
+  `mount`.each_line.grep(/#{USB_OUTPUT_MOUNT}/).any?
 end
 
 def files_without_preview
