@@ -124,8 +124,8 @@ def wait_and_unmount(dir, unmount_command, attempts: 20)
       next
     end
 
-    puts "Unmounting #{USB_OUTPUT_MOUNT}"
-    system(*VERACRYPT_UMOUNT_CMD)
+    puts "Unmounting #{dir}"
+    system(*unmount_command)
 
     return
   end
