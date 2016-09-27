@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
-require 'shellwords'
 require 'ruby-progressbar'
 require 'dotenv'
 
@@ -23,8 +22,8 @@ CONVERT_COMMAND = %w[convert -scale 1366x768]
 
 SOURCE_GLOB = File.join(SOURCE_LOCATION, '/**/*%s')
 
-VERACRYPT_MOUNT_CMD="sudo /usr/bin/veracrypt --text --non-interactive --keyfiles=#{VERACRYPT_KEYFILE_PATH} --mount #{USB_OUTPUT_CONTAINER} #{USB_OUTPUT_MOUNT}"
-VERACRYPT_UMOUNT_CMD="sudo /usr/bin/veracrypt --text --non-interactive -d  #{USB_OUTPUT_MOUNT}"
+VERACRYPT_MOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive', '--keyfiles', VERACRYPT_KEYFILE_PATH, '--mount', USB_OUTPUT_CONTAINER, USB_OUTPUT_MOUNT]
+VERACRYPT_UMOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive', '-d', USB_OUTPUT_MOUNT]
 
 def main
   if File.exist?(SOURCE_LOCATION)
@@ -78,7 +77,7 @@ def with_usb_output_dir
       puts "Veracrypt directory already mounted"
     else
       puts "Mounting #{USB_OUTPUT_MOUNT}"
-      system(VERACRYPT_MOUNT_CMD)
+      system(*VERACRYPT_MOUNT_CMD)
     end
 
     yield
@@ -128,7 +127,7 @@ def wait_and_unmount(dir, unmount_command, attempts: 20)
     end
 
     puts "Unmounting #{USB_OUTPUT_MOUNT}"
-    system(VERACRYPT_UMOUNT_CMD)
+    system(*VERACRYPT_UMOUNT_CMD)
 
     return
   end
