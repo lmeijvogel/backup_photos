@@ -134,9 +134,9 @@ def wait_and_unmount(dir, unmount_command, attempts: 20)
     end
 
     puts "Unmounting #{dir}"
-    system(*unmount_command)
+    success = system(*unmount_command)
 
-    return
+    return if success
   end
 end
 
