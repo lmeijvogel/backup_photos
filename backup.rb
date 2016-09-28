@@ -11,9 +11,9 @@ SOURCE_LOCATION = ENV['SOURCE_LOCATION']
 NEF_OUTPUT_DIR = ENV['NEF_OUTPUT_DIR']
 JPG_OUTPUT_DIR = ENV['JPG_OUTPUT_DIR']
 
-USB_OUTPUT_CONTAINER = ENV['USB_OUTPUT_CONTAINER']
-USB_OUTPUT_MOUNT = ENV['USB_OUTPUT_MOUNT']
-USB_OUTPUT_DIR = ENV['USB_OUTPUT_DIR']
+VERACRYPT_REPOSITORY_PATH = ENV['VERACRYPT_REPOSITORY_PATH']
+VERACRYPT_MOUNT_PATH = ENV['VERACRYPT_MOUNT_PATH']
+VERACRYPT_PHOTOS_PATH = ENV['VERACRYPT_PHOTOS_PATH']
 VERACRYPT_KEYFILE_PATH = ENV['VERACRYPT_KEYFILE_PATH']
 
 PREVIEW_DIR = ENV['PREVIEW_DIR']
@@ -22,8 +22,8 @@ CONVERT_COMMAND = %w[convert -scale 1366x768]
 
 SOURCE_GLOB = File.join(SOURCE_LOCATION, '/**/*%s')
 
-VERACRYPT_MOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive', '--keyfiles', VERACRYPT_KEYFILE_PATH, '--mount', USB_OUTPUT_CONTAINER, USB_OUTPUT_MOUNT]
-VERACRYPT_UMOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive', '-d', USB_OUTPUT_MOUNT]
+VERACRYPT_MOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive', '--keyfiles', VERACRYPT_KEYFILE_PATH, '--mount', VERACRYPT_REPOSITORY_PATH, VERACRYPT_MOUNT_PATH]
+VERACRYPT_UMOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive', '-d', VERACRYPT_MOUNT_PATH]
 
 def main
   if File.exist?(SOURCE_LOCATION)
@@ -42,7 +42,7 @@ def main
   end
 
   with_usb_output_dir do
-    perform_backup("#{NEF_OUTPUT_DIR}/*" => USB_OUTPUT_DIR)
+    perform_backup("#{NEF_OUTPUT_DIR}/*" => VERACRYPT_PHOTOS_PATH)
   end
 
   create_previews
@@ -70,24 +70,24 @@ def perform_backup(mapping)
 end
 
 def with_usb_output_dir
-  return unless File.exist?(USB_OUTPUT_CONTAINER)
+  return unless File.exist?(VERACRYPT_REPOSITORY_PATH)
 
   begin
     if usb_container_mounted?
       puts "Veracrypt directory already mounted"
     else
-      puts "Mounting #{USB_OUTPUT_MOUNT}"
+      puts "Mounting #{VERACRYPT_MOUNT_PATH}"
       system(*VERACRYPT_MOUNT_CMD)
     end
 
     yield
   ensure
-    wait_and_unmount(USB_OUTPUT_MOUNT, VERACRYPT_UMOUNT_CMD)
+    wait_and_unmount(VERACRYPT_MOUNT_PATH, VERACRYPT_UMOUNT_CMD)
   end
 end
 
 def usb_container_mounted?
-  `mount`.each_line.grep(/#{USB_OUTPUT_MOUNT}/).any?
+  `mount`.each_line.grep(/#{VERACRYPT_MOUNT_PATH}/).any?
 end
 
 def files_without_preview
