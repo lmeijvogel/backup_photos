@@ -17,8 +17,10 @@ VERACRYPT_PHOTOS_PATH = ENV['VERACRYPT_PHOTOS_PATH']
 VERACRYPT_KEYFILE_PATH = ENV['VERACRYPT_KEYFILE_PATH']
 
 PREVIEW_DIR = ENV['PREVIEW_DIR']
+IMAGE_PREVIEW_SIZE=ENV['IMAGE_PREVIEW_SIZE']
+IMAGE_VIEWER=ENV['IMAGE_VIEWER']
 
-CONVERT_COMMAND = %w[convert -scale 1366x768]
+CONVERT_COMMAND = ['convert', '-scale', IMAGE_PREVIEW_SIZE]
 
 SOURCE_GLOB = File.join(SOURCE_LOCATION, '/**/*%s')
 
@@ -113,7 +115,14 @@ def create_previews
     system(*command)
   end
 
-  puts "First new file: #{first_output_file}"
+  if first_output_file
+    puts "First new file: #{first_output_file}"
+    puts "Open? [Yn]"
+
+    if (gets.strip.downcase != 'n')
+      system(IMAGE_VIEWER, first_output_file)
+    end
+  end
 end
 
 def wait_and_unmount(dir, unmount_command, attempts: 20)
