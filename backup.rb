@@ -138,4 +138,36 @@ def fs_in_use?(mount_point)
   system('fuser', '-m', mount_point, [:out, :err] => '/dev/null')
 end
 
-main
+def help
+  # Note: The [1..-1] selection on the mount commands below is to strip out the `sudo` prefix
+  puts <<~HELP
+    Requirements for this tool:
+    - ImageMagick (for creating thumbnails - this is desirable on my slow netbook,
+    - Veracrypt (for added privacy when copying files onto a USB stick)
+    - Sudo rights to mount and unmount the Veracrypt volume.
+
+    Veracrypt configuration:
+    Create a Veracrypt container on the USB stick and secure it with a keyfile (no password,
+    since I don't want to have to type in the password every time. Make sure that the
+    keyfile is on the laptop, not on the same volume as the Veracrypt container. Also make
+    sure that the keyfile is backed up somewhere, otherwise losing the laptop also makes
+    the Veracrypt backup useless.
+
+    Sudoers configuration:
+    In my case, I don't want a sudo password prompt when the Veracrypt volume is mounted,
+    so for this, add the following to the sudo-config (visudo):
+
+    # Cmnd alias specification
+    # Cmnd_Alias VERACRYPT = #{VERACRYPT_MOUNT_CMD[1..-1].join(" ")},\\
+                             #{VERACRYPT_UMOUNT_CMD[1..-1].join(" ")}
+
+    #{`whoami`.strip} ALL=NOPASSWD: VERACRYPT
+  HELP
+
+end
+
+if ARGV[0] == '--help'
+  puts help
+else
+  main
+end
