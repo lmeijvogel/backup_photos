@@ -101,6 +101,8 @@ def files_without_preview
 end
 
 def create_previews
+  FileUtils.mkdir_p(PREVIEW_DIR)
+
   puts "Creating preview images"
   progress_bar = ProgressBar.create(total: files_without_preview.count, format: "|%w>%i| %c/%C (%e)")
 
