@@ -1,0 +1,19 @@
+There is no file in folder '/'.
+There is no file in folder '/store_00020001'.
+There is no file in folder '/store_00020001/DCIM'.
+There are 574 files in folder '/store_00020001/DCIM/114D7000'.
+#1     MVG_0952.JPG               rd  4397 KB 4928x3264 image/jpeg
+#2     MVG_0952.NEF               rd 15402 KB application/x-unknown
+#3     MVG_0953.JPG               rd  5716 KB 4928x3264 image/jpeg
+#4     MVG_0953.NEF               rd 16500 KB application/x-unknown
+#5     MVG_0954.JPG               rd  5961 KB 4928x3264 image/jpeg
+#6     MVG_0954.NEF               rd 16718 KB application/x-unknown
+#7     MVG_0955.JPG               rd  5831 KB 4928x3264 image/jpeg
+#8     MVG_0955.NEF               rd 16592 KB application/x-unknown
+#9     MVG_0956.JPG               rd  5836 KB 4928x3264 image/jpeg
+#10    MVG_0956.NEF               rd 16619 KB application/x-unknown
+#11    MVG_0957.JPG               rd  4604 KB 4928x3264 image/jpeg
+#12    MVG_0957.NEF               rd 15518 KB application/x-unknown
+#13    MVG_0958.JPG               rd  6647 KB 4928x3264 image/jpeg
+#14    MVG_0958.NEF               rd 16943 KB application/x-unknown
+#15    MVG_0959.JPG               rd  6488 KB 4928x3264 image/jpeg

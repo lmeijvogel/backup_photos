@@ -3,6 +3,7 @@
 require 'fileutils'
 require 'ruby-progressbar'
 require 'dotenv'
+require_relative './camera_interface.rb'
 
 Dotenv.load
 
@@ -28,6 +29,12 @@ VERACRYPT_MOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive'
 VERACRYPT_UMOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive', '-d', VERACRYPT_MOUNT_PATH]
 
 def main
+  begin
+    CameraInterface.new.retrieve_photos(SOURCE_LOCATION)
+  rescue StandardError => e
+    puts e.message
+  end
+
   if File.exist?(SOURCE_LOCATION)
     perform_backup(
       (SOURCE_GLOB % ['{NEF,MOV}']) => NEF_OUTPUT_DIR,
