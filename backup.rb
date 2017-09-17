@@ -1,8 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
+require 'date'
 require 'ruby-progressbar'
 require 'dotenv'
+
 require_relative './camera_interface.rb'
 
 Dotenv.load
@@ -131,6 +133,14 @@ def create_previews
 
     if (gets.strip.downcase != 'n')
       system(IMAGE_VIEWER, first_output_file)
+    end
+
+    preview_init_script_filename = Date.today.strftime("%Y-%m-%d.sh")
+
+    unless File.exist?(preview_init_script_filename)
+      File.open(preview_init_script_filename, "w") do |file|
+        file.puts "#{IMAGE_VIEWER} \"#{first_output_file}\""
+      end
     end
   end
 end
