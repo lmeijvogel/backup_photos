@@ -30,6 +30,7 @@ VERACRYPT_UMOUNT_CMD=['sudo', '/usr/bin/veracrypt', '--text', '--non-interactive
 
 def main
   begin
+    puts "Retrieving pictures from camera"
     CameraInterface.new.retrieve_photos(SOURCE_LOCATION)
   rescue StandardError => e
     puts e.message
